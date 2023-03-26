@@ -1,0 +1,8 @@
+/* comment out these styles to see real default values, used only to make it easier to see what is going on */
+#wrapper{padding:18px}
+.fl, .fr, .ffluid, .col, .grid-1, .grid-2, .grid-3, .grid-4, .grid-5, .grid-6, .grid-7, .grid-8, .grid-9, .grid-10, .grid-11, .grid-12,
+.fgrid-1, .fgrid-2, .fgrid-3, .fgrid-4, .fgrid-5, .fgrid-6, .fgrid-7, .fgrid-8, .fgrid-9, .fgrid-10, .fgrid-11, .fgrid-12, .clickable{outline:1px solid #ccc; background-color:#f5f5f5; margin-bottom:10px}
+.fcolholder .lastcol, .ffluid{background-color:#ddffff; text-align:center}
+.fl, .fr, .ffluid{padding:10px}
+.grid{overflow:hidden; white-space:nowrap} /* overflow hidden and nowrap only to show dynamic size without text going out the grid */
+.col, .fl, .fr, .ffluid{margin:0}

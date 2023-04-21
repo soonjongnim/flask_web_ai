@@ -6,12 +6,16 @@ from package.emailSend import create_text_file
 from package.openaiApi import openaiApiFunc
 
 current_directory = os.getcwd()
+# change path
+os.chdir(current_directory)
+# Get all the files in that directory
+files = os.listdir(current_directory)
 audio_file_path = os.path.join(current_directory, 'audio.mp3')
 video_file_path = os.path.join(current_directory, 'input.mp4')
 # audio_path = r'D:\gitweb\flask_web_ai\backend\audio.mp3'
-
+    
 def transrate(data):
-	# print('Files in %r: %s ' % (currentPath, files))
+	# print('Files in %r: %s ' % (current_directory, files))
 	videoUrl = data['videoUrl']
 	languages = data['languages']
 	# print('data:' , data)
@@ -48,7 +52,12 @@ def youtube_to_mp4(videoUrl):
 def mp4_to_mp3():
 	# mp4 파일 경로 설정
 	input_file = "audio.mp4"
-
+	# print('절대주소: ' + os.path.abspath('.'))
+	# print('video_file_path: '+ video_file_path)
+	if os.path.exists(video_file_path):
+		print("파일이 존재합니다.")
+	else:
+		print("파일을 찾을 수 없습니다.")
 	# 오디오 추출 및 mp3 파일로 저장
 	audio = AudioSegment.from_file(video_file_path, format='mp4')
 	audio.export(os.path.splitext(input_file)[0] + ".mp3", format="mp3")

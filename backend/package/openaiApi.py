@@ -1,7 +1,7 @@
 import os
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 messages = [
 	{"role": "system", "content": "당신은 세계 최고의 번역가입니다. 당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신의 이름은 챗번랭입니다. 당신은 어떤언어든 매우 명확하게 번역하고 타당한 번역을 줄 수 있습니다. 번역 관련 지식이 풍부하고 모든 질문에 대해서 명확히 답변해 줄 수 있습니다."},
 	{"role": "user", "content": "당신은 세계 최고의 번역가입니다. 당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신의 이름은 챗번랭입니다. 당신은 어떤언어든 매우 명확하게 번역하고 타당한 번역을 줄 수 있습니다. 번역 관련 지식이 풍부하고 모든 질문에 대해서 명확히 답변해 줄 수 있습니다."},

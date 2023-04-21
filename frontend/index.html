@@ -5,6 +5,13 @@
 		<title>Sample default.css</title>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="static/css/style.css">
+    <style>
+      select, ul { height: 100px; overflow: auto; width: 200px; border: 1px solid #000; }
+      ul { list-style-type: none; margin: 0; padding: 0; overflow-x: hidden; background-color: white; }
+      li { margin: 0; padding: 0; }
+      label { display: block; color: WindowText; background-color: Window; margin: 0; padding: 0; width: 100%; }
+      /* label:hover { background-color: Highlight; color: HighlightText; } */
+    </style>
 	</head>
 	<body>
     <h1>영상음성을 원하는 자막으로 변환</h1>
@@ -12,38 +19,214 @@
       <label for="video-url">영상주소:</label>
       <input type="text" id="video-url" name="video-url"><br><br>
       <label for="language">변환 자막:</label>
-      <select id="language" name="language">
-        <option value="en">영어</option>
-        <option value="ko">한국어</option>
-        <option value="ja">일어</option>
-        <option value="zh-CN">중국어</option>
-        <option value="vi">베트남어</option>
-        <option value="fr">프랑스어</option>
-        <option value="es">스페인어</option>
-        <option value="de">독일어</option>
-      </select><br><br>
+      <table cellpadding="0" cellspacing="0" style="cursor:pointer" onClick="multiSelect('OPEN')">
+        <tr>
+          <td align="center" width="200" style="border:1px solid;font-size:12px;">자막 언어 선택</td>
+          <td><input type="button" value="▼" onclick=""></td>
+        </tr>
+      </table>
+  
+      <div id="Div" style="position:absolute;visibility:hidden;font-size:12px;">
+        <ul>
+          <li><input type="checkbox" name="mycheckbox" id="English">English</li>
+          <li><input type="checkbox" name="mycheckbox" id="Korean">Korean</li>
+          <li><input type="checkbox" name="mycheckbox" id="Chinese">Chinese</li>
+          <li><input type="checkbox" name="mycheckbox" id="Japanese">Japanese</li>
+          <li><input type="checkbox" name="mycheckbox" id="Arabic">Arabic</li>
+          <li><input type="checkbox" name="mycheckbox" id="German">German</li>
+          <li><input type="checkbox" name="mycheckbox" id="Spanish">Spanish</li>
+          <li><input type="checkbox" name="mycheckbox" id="French">French</li>
+          <li><input type="checkbox" name="mycheckbox" id="Hebrew">Hebrew</li>
+          <li><input type="checkbox" name="mycheckbox" id="Italian">Italian</li>
+          <li><input type="checkbox" name="mycheckbox" id="Dutch">Dutch</li>
+          <li><input type="checkbox" name="mycheckbox" id="Polish">Polish</li>
+          <li><input type="checkbox" name="mycheckbox" id="Portuguese">Portuguese</li>
+          <li><input type="checkbox" name="mycheckbox" id="Russian">Russian</li>
+          <li><input type="checkbox" name="mycheckbox" id="Swedish">Swedish</li>
+          <li><input type="checkbox" name="mycheckbox" id="Turkish">Turkish</li>
+        </ul>
+        <div style="padding-top:3px;text-align:right"><input type="button" value="확인" onClick="multiSelect('CLOSE')"></div>
+      </div><br><br>
       <label for="email">받을 이메일:</label>
       <input type="email" id="email" name="email">
-      <button type="button" onclick="analyzeText()">변환</button>
-      <!-- <input type="submit" value="변환"> -->
+      <button type="button" id="saveBtn">변환</button>
+      <!-- <button type="submit">변환</button> -->
     </form>
-    <pre id="result"></pre>
+    <!-- 로딩바를 표시할 요소 -->
+    <div id="loading-bar">aaa</div>
+    <img src="/frontend/static/img/1.gif"/>
+    <p id="result"></p>
+    <div>--------------------------------------------------------------------------------------------------------</div>
+    <input type="text" id="massege" name="massege">
+    <button type="button" onclick="openaiApiFunc()">자막변환</button>
+    <p id="output"></p>
     <script>
-      function analyzeText() {
-        var inputText = $('#video-url').val();
+      var seqArr = new Array();  //체크박스 seq값 담을 배열변수 하나
+      function multiSelect(value){
+        seqArr = [];
+        if(value=="OPEN") {
+          Div.style.visibility="visible";
+        }else{
+          var checkbox = $("input[name='mycheckbox']:checked");//체크된거 가져오기
+          //체크가 되지도 않았는데 이벤트 실행되면 안되니
+          if(checkbox.length == 0){ //체크된게 0개 이니까
+              alert('체크하세요');
+          }else{ //체크 되었으니 
+              //체크박스 담을 변수하나
+              var chklist = $("input[name='mycheckbox']");
+              //먼저 체크박스 길이만큼 반복돌리면서
+              for(var i = 0; i < chklist.length; i++){
+                if(chklist[i].checked){ //선택되어 있으면 배열에 값을 저장함
+                  checkboxTest = chklist[i].getAttribute("id");
+                  // console.log(checkboxTest);
+                  seqArr.push(chklist[i].getAttribute("id"));
+                }
+              }
+              console.log(seqArr); //값 들어와있나 한번씩 찍어보고 잘들어왔으니
+          }
+          Div.style.visibility="hidden";
+        }
+      }
+      // const languages = document.querySelector('#languages');
+      const selected = document.querySelector('#selected');
+      
+      function showOptions() {
+        // var select = document.getElementById("lang");
+        // languages.size = languages.options.length;
+      };
+
+      // languages.addEventListener('click', () => {
+      //   const options = languages.options;
+      //   let selectedLangs = '';
+      //   for (let i = 0; i < options.length; i++) {
+      //     if (options[i].selected) {
+      //       selectedLangs += `${options[i].textContent}, `;
+      //     }
+      //   }
+      //   selected.textContent = selectedLangs.slice(0, -2);
+      // });
+      function openaiApiFunc() {
+        console.log('호출')
+        console.log('seqArr: ' + seqArr)
+        var massege = $('#massege').val();
+        var result = "";
+        if (massege === '') {
+          alert('massege 비었습니다.')
+          return false;
+        }
+        console.log('massege: ' + massege)
         $.ajax({
           type: 'POST',
-          url: 'http://127.0.0.1:5000/api/analyze',
-          data: JSON.stringify({'video-url': inputText}),
-          contentType: 'application/json',
-          success: function(result) {
-            console.log('result: ' + result)
-            $('#result').text('Analysis result: ' + result);
+          url: 'http://172.16.11.218:5000/api/openai',
+          data: JSON.stringify({'massege': massege, 'languages': seqArr}),
+          contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
+          async: false, // 동기화 설정
+          // dataType: "json", //응답받을 데이터 타입 (XML,JSON,TEXT,HTML,JSONP) 
+          beforeSend: function() {
+            $("#loading-bar").show(); // AJAX 호출 전에 로딩바를 표시
+          },
+          success: function(response) {
+            console.log('response: ' + response)
+            $('#output').text('Analysis response: ' + response);
+            result = response; 
           },
           error: function(xhr, status, error) {
             console.log(error);
+          },
+          complete: function() {
+            $('#loading-bar').hide(); // 로딩 화면 숨김
           }
         });
+        return result;
+      };
+      $("#saveBtn").on("click",function(){                                
+          $(this).attr("disabled",true);
+          $('img').css("display:block")
+          $('img').stop().animate({
+            'margin-top':'+=100',
+            'margin-left': '+=200'
+          },1000).delay(2000).animate({
+            'margin-top':'-=100',
+            'margin-left': '-=200'
+          },1000); 
+          $(this).attr("disabled",false);
+          analyzeText();
+      });
+      function analyzeText() {
+        var inputUrl = $('#video-url').val();
+        var inputEmail = $('#email').val();
+        var result = "";
+        if (inputUrl === '') {
+          alert('주소가 비었습니다.')
+          return false;
+        }
+        if (!check()){
+          return false
+        }
+        data = {
+          "videoUrl": inputUrl,
+          "email": inputEmail,
+          'languages': seqArr
+        }
+        $.ajax({
+          type: 'POST',
+          url: 'http://172.16.11.218:5000/api/analyze',
+          data: JSON.stringify(data),
+          contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
+          // async: false, // 동기화 설정
+          dataType: "json", //응답받을 데이터 타입 (XML,JSON,TEXT,HTML,JSONP) 
+          beforeSend: function() {
+            $("#loading-bar").show(); // AJAX 호출 전에 로딩바를 표시
+          },
+          success: function(response) {
+            console.log('response: ' + response)
+            $('#result').text('Analysis response: ' + response);
+            result = response; 
+          },
+          error: function(xhr, status, error) {
+            console.log(error);
+          },
+          complete: function() {
+            $('#loading-bar').hide(); // 로딩 화면 숨김
+          }
+        });
+        return result;
+      };
+ 
+      function emailSendF() {
+        $.ajax({
+          url: '/send-email',
+          type: 'POST',
+          data: {
+              from: 'your_email@gmail.com',
+              to: 'recipient@example.com',
+              subject: 'Hello',
+              text: 'Hello world',
+          },
+          success: function (response) {
+              console.log('Email sent successfully');
+          },
+          error: function (xhr, status, error) {
+              console.log('Failed to send email:', error);
+          }
+        });
+      };
+      function check() {
+        var email = document.getElementById("email");
+        if (email.value !== "") {
+            var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+            if (exptext.test(email.value) == false) {
+                //이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우			
+                alert("입력한 메일형식이 올바르지 않습니다.");
+                email.focus();
+                return false;
+            }else{
+              return true;
+            }
+        }else{
+          alert('이메일을 입력해주세요.')
+          return false;
+        }
       }
     </script>
   </body> 

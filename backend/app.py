@@ -3,6 +3,9 @@ import sys
 from os import path
 from package import transration
 from flask_cors import CORS
+from package.emailSend import send_email
+from package.openaiApi import openaiApiFunc
+import json
 
 app = Flask(__name__)
 app.debug = True
@@ -15,23 +18,53 @@ def index():
 @app.route('/api/analyze', methods=['POST'])
 def analyze():
     data = request.get_json()
-    videoUrl = data['video-url']
+    videoUrl = data['videoUrl']
+    email = data['email']
+    languages = data['languages']
+    print('data: ' + str(data))
     print('videoUrl: ' + videoUrl)
-    transrate = transration.transrate(videoUrl)
+    print('email: ' + email)
+    print('languages: ' + str(languages))
+    transrate = transration.transrate(data)
     print('transrate: ' + transrate)
+    
+    translation_result = openaiApiFunc(transrate, str(languages))
+    print('translation_result: ' + translation_result)
 
-    response = make_response(jsonify(transrate))
-    response.headers["Content-Type"] = "application/json"
-    return response
+    # response = make_response(jsonify(transrate))
+    # response.headers["Content-Type"] = "application/json"
+
+    # # 이메일 보내기
+    # # 보내는 사람, 받는 사람, 제목, 내용, 첨부파일 경로 지정
+    # sender_email = "soon9086@gmail.com"
+    # receiver_email = "soon9086@gmail.com"
+    # subject = "Email Subject"
+    # body = "Email Body"
+    # filename = "attachment.txt"
+
+    # is_sent = send_email(sender_email, receiver_email, subject, body, filename)
+
+    # if is_sent:
+    #     print("Email sent successfully.")
+    # else:
+    #     print("Failed to send email.")
+
+    # return response
 
     # return jsonify(transrate)
 
-# @app.route('/hello/')
-# @app.route('/hello/<name>')
-# def hello(name=None):
-#     transration.transrate()
-#     return render_template('hello.html', name=name)
+@app.route('/api/openai', methods=['POST'])
+def openai():
+    data = request.get_json()
+    # print('data: ' + data)
+    msg = data['massege']
+    languages = str(data['languages'])
+    print('languages: ' + languages)
+    result = openaiApiFunc(msg, languages)
+    print('result: ' + result)
+    
+    return result
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')

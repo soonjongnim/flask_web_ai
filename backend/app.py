@@ -6,12 +6,10 @@ from flask_cors import CORS
 from package.emailSend import send_email
 from package.openaiApi import openaiApiFunc
 import json
-from googletrans import Translator
 
 app = Flask(__name__)
 app.debug = True
 CORS(app)
-translator = Translator()
 
 @app.route('/')
 def index():
@@ -27,20 +25,18 @@ def analyze():
     print('videoUrl: ' + videoUrl)
     print('email: ' + email)
     print('languages: ' + str(languages))
-    # transrate = transration.transrate(data)
-    # transrate_split = transrate.split(',')
-    # print('transrate: ', transrate)
-    result_list = []
-    
-    print(translator.translate('안녕하세여', dest='en').text)
-    # result_list.append(result_list)
-    # print('transrate_split: ' , transrate_split)
+    transrate = transration.transrate(data)
+    print('transrate: ', transrate)
+    # result_list = []
     # for t in transrate:
-    #     print('번역: ' + translator.translate(t, src='ko', dest='en'))
-    #     result_list.append(translator.translate(t, src='ko', dest='en'))
-    # # transrate_result = openaiApiFunc(transrate, str(languages))
-    # print('result_list: ' + result_list)
+    #     print('번역: ' + translator.translate(t, dest='en').text)
+    #     result_list.append(translator.translate(t, dest='en').text)
+    # # # transrate_result = openaiApiFunc(transrate, str(languages))
+    # print('result_list: ' , result_list)
 
+    # with open("attachment2.txt", "w") as f:
+    #     for r in result_list:
+    #         f.write(f'{r}\n')
     # response = make_response(jsonify(transrate))
     # response.headers["Content-Type"] = "application/json"
 

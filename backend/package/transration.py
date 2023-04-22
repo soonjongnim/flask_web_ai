@@ -4,6 +4,7 @@ from pytube import YouTube
 from pydub import AudioSegment
 from package.emailSend import create_text_file
 from package.openaiApi import openaiApiFunc
+import json
 
 current_directory = os.getcwd()
 # change path
@@ -36,11 +37,10 @@ def transrate(data):
 	
 	# create_text_file 함수를 활용하여 "attachment.txt" 파일 생성
 	# create_text_file("attachment.txt", "첨부 파일 내용")
-	# print('attachment_result: ', str(attachment_result))
-	attachment_str = '\n'.join(attachment_result)
-	# print(attachment_str)
-
-	return attachment_str
+	# print('attachment_result: ', attachment_result)
+	# attachment_str = '\n'.join(attachment_result)
+	# print("ok")
+	return attachment_result
 	# return result['text']
 
 def youtube_to_mp4(videoUrl):

@@ -6,10 +6,12 @@ from flask_cors import CORS
 from package.emailSend import send_email
 from package.openaiApi import openaiApiFunc
 import json
+from googletrans import Translator
 
 app = Flask(__name__)
 app.debug = True
 CORS(app)
+translator = Translator()
 
 @app.route('/')
 def index():
@@ -25,11 +27,19 @@ def analyze():
     print('videoUrl: ' + videoUrl)
     print('email: ' + email)
     print('languages: ' + str(languages))
-    transrate = transration.transrate(data)
-    print('transrate: ' + transrate)
+    # transrate = transration.transrate(data)
+    # transrate_split = transrate.split(',')
+    # print('transrate: ', transrate)
+    result_list = []
     
-    translation_result = openaiApiFunc(transrate, str(languages))
-    print('translation_result: ' + translation_result)
+    print(translator.translate('안녕하세여', dest='en').text)
+    # result_list.append(result_list)
+    # print('transrate_split: ' , transrate_split)
+    # for t in transrate:
+    #     print('번역: ' + translator.translate(t, src='ko', dest='en'))
+    #     result_list.append(translator.translate(t, src='ko', dest='en'))
+    # # transrate_result = openaiApiFunc(transrate, str(languages))
+    # print('result_list: ' + result_list)
 
     # response = make_response(jsonify(transrate))
     # response.headers["Content-Type"] = "application/json"
@@ -49,7 +59,7 @@ def analyze():
     # else:
     #     print("Failed to send email.")
 
-    # return response
+    return True
 
     # return jsonify(transrate)
 

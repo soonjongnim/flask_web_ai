@@ -15,7 +15,7 @@ os.chdir(current_directory)
 files = os.listdir(current_directory)
 audio_file_path = os.path.join(current_directory, 'audio.mp3')
 video_file_path = os.path.join(current_directory, 'input.mp4')
-print(LANGUAGES)
+# print(LANGUAGES)
 # audio_path = r'D:\gitweb\flask_web_ai\backend\audio.mp3'
     
 def transrate(data):
@@ -39,14 +39,16 @@ def transrate(data):
 		attachment_result.append(r["text"].strip())
 	# create_text_file 함수를 활용하여 "attachment.txt" 파일 생성
 	# create_text_file("attachment.txt", "첨부 파일 내용")
-	translate_result = openaiApiFunc(attachment_result, languages[0])
+	translate_result_str = openaiApiFunc(attachment_result, languages[0])
 	# translate_result = translate_lang(attachment_result, languages[0])
-
+	print('type translate_result:', type(translate_result_str))
+	translate_result_list = translate_result_str.split(",")
+	print('translate_result_list:', translate_result_list)
 	with open("attachment2.txt", "w") as f:
-		for r in translate_result:
+		for r in translate_result_list:
 			f.write(f'{r}\n')
 
-	return translate_result
+	return translate_result_list
 
 def youtube_to_mp4(videoUrl):
 	yt = YouTube(videoUrl)

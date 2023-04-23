@@ -1,6 +1,8 @@
 import os
 import openai
+from dotenv import load_dotenv
 
+load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 messages = [
@@ -11,10 +13,10 @@ messages = [
 
 def openaiApiFunc(content, languages):
 	print('openaiApiFunc content: ')
-	print("messages: " , languages)
-	last_sentence = "순서대로 ,로 구분하여 한줄씩" + str(languages) + "로 번역하고 리스트로 출력해줘"
-	messages.append({"role": "user", "content": '```' + str(content) + '```' + last_sentence})
-	print("messages: " , messages)
+	print("languages: " , languages)
+	last_sentence = "[]안에 순서대로 콤마로 구분하여 그대로 한줄씩" + str(languages) + "로 번역하고 번역한 것만 리스트로 출력해줘"
+	# messages.append({"role": "user", "content": '```' + str(content) + '```' + last_sentence})
+	# print("messages: " , messages)
 	completion = openai.ChatCompletion.create(
 		model="gpt-3.5-turbo",
 		messages=[
@@ -26,7 +28,7 @@ def openaiApiFunc(content, languages):
 	)
 	assistant_content = completion.choices[0].message["content"]
 	# messages.append({"role": "assistant", "content": assistant_content})
-
+	
 	print(assistant_content)
 	
 	return assistant_content

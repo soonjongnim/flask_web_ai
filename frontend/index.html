@@ -28,8 +28,8 @@
   
       <div id="Div" style="position:absolute;visibility:hidden;font-size:12px;">
         <ul>
-          <li><input type="checkbox" name="mycheckbox" id="af">afrikaans</li>
-          <li><input type="checkbox" name="mycheckbox" id="sq">albanian</li>
+          <li><input type="checkbox" name="mycheckbox" id="afrikaans">afrikaans</li>
+          <li><input type="checkbox" name="mycheckbox" id="albanian">albanian</li>
           <li><input type="checkbox" name="mycheckbox" id="am">amharic</li>
           <li><input type="checkbox" name="mycheckbox" id="ar">arabic</li>
           <li><input type="checkbox" name="mycheckbox" id="hy">armenian</li>
@@ -42,14 +42,14 @@
           <li><input type="checkbox" name="mycheckbox" id="ca">catalan</li>
           <li><input type="checkbox" name="mycheckbox" id="ceb">cebuano</li>
           <li><input type="checkbox" name="mycheckbox" id="ny">chichewa</li>
-          <li><input type="checkbox" name="mycheckbox" id="zh-cn">chinese (simplified)</li>
+          <li><input type="checkbox" name="mycheckbox" id="chinese">chinese (simplified)</li>
           <li><input type="checkbox" name="mycheckbox" id="zh-tw">chinese (traditional)</li>
           <li><input type="checkbox" name="mycheckbox" id="co">corsican</li>
           <li><input type="checkbox" name="mycheckbox" id="hr">croatian</li>
           <li><input type="checkbox" name="mycheckbox" id="cs">czech</li>
           <li><input type="checkbox" name="mycheckbox" id="da">danish</li>
           <li><input type="checkbox" name="mycheckbox" id="nl">dutch</li>
-          <li><input type="checkbox" name="mycheckbox" id="en">english</li>
+          <li><input type="checkbox" name="mycheckbox" id="english">english</li>
           <li><input type="checkbox" name="mycheckbox" id="eo">esperanto</li>
           <li><input type="checkbox" name="mycheckbox" id="et">estonian</li>
           <li><input type="checkbox" name="mycheckbox" id="tl">filipino</li>
@@ -74,12 +74,12 @@
           <li><input type="checkbox" name="mycheckbox" id="id">indonesian</li>
           <li><input type="checkbox" name="mycheckbox" id="ga">irish</li>
           <li><input type="checkbox" name="mycheckbox" id="it">italian</li>
-          <li><input type="checkbox" name="mycheckbox" id="ja">japanese</li>
+          <li><input type="checkbox" name="mycheckbox" id="japanese">japanese</li>
           <li><input type="checkbox" name="mycheckbox" id="jw">javanese</li>
           <li><input type="checkbox" name="mycheckbox" id="kn">kannada</li>
           <li><input type="checkbox" name="mycheckbox" id="kk">kazakh</li>
           <li><input type="checkbox" name="mycheckbox" id="km">khmer</li>
-          <li><input type="checkbox" name="mycheckbox" id="ko">korean</li>
+          <li><input type="checkbox" name="mycheckbox" id="korean">korean</li>
           <li><input type="checkbox" name="mycheckbox" id="ku">kurdish (kurmanji)</li>
           <li><input type="checkbox" name="mycheckbox" id="ky">kyrgyz</li>
           <li><input type="checkbox" name="mycheckbox" id="lo">lao</li>
@@ -208,8 +208,8 @@
         console.log('massege: ' + massege)
         $.ajax({
           type: 'POST',
-          // url: 'http://172.30.1.100:5000/api/openai',
-          url: 'http://192.168.200.101:5000/api/openai',
+          url: 'http://172.16.11.218:5000/api/openai',
+          // url: 'http://192.168.200.101:5000/api/openai',
           data: JSON.stringify({'massege': massege, 'languages': seqArr}),
           contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
           async: false, // 동기화 설정
@@ -262,8 +262,8 @@
         }
         $.ajax({
           type: 'POST',
-          // url: 'http://172.30.1.100:5000/api/analyze',
-          url: 'http://192.168.200.101:5000/api/analyze',
+          url: 'http://172.16.11.218:5000/api/analyze',
+          // url: 'http://192.168.200.101:5000/api/analyze',
           data: JSON.stringify(data),
           contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
           // async: false, // 동기화 설정

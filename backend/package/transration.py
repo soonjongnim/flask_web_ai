@@ -39,7 +39,8 @@ def transrate(data):
 		attachment_result.append(r["text"].strip())
 	# create_text_file 함수를 활용하여 "attachment.txt" 파일 생성
 	# create_text_file("attachment.txt", "첨부 파일 내용")
-	translate_result = translate_lang(attachment_result, languages[0])
+	translate_result = openaiApiFunc(attachment_result, languages[0])
+	# translate_result = translate_lang(attachment_result, languages[0])
 
 	with open("attachment2.txt", "w") as f:
 		for r in translate_result:

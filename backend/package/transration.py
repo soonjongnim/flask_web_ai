@@ -51,7 +51,7 @@ def transrate(data):
 	return translate_result_list
 
 def youtube_to_mp4(videoUrl):
-	yt = YouTube(videoUrl)
+	yt = YouTube(videoUrl, use_oauth = True, allow_oauth_cache = True)
 	yt.streams.filter(file_extension='mp4').get_by_resolution('720p').download(output_path='.', filename='input.mp4')
 	mp4_to_mp3()
 

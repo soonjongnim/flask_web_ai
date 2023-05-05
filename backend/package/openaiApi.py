@@ -14,9 +14,11 @@ messages = [
 def openaiApiFunc(content, languages):
 	print('openaiApiFunc content: ')
 	print("languages: " , languages)
-	last_sentence = "[]안에 순서대로 콤마로 구분하여 그대로 한줄씩" + str(languages) + "로 번역하고 번역한 것만 리스트로 출력해줘"
+	print("content: " , content)
+	last_sentence = "[]안에 순서대로 콤마로 구분하여 그대로 한줄씩 " + str(languages) + "로 번역하고 번역한 것만 리스트로 출력해줘"
 	# messages.append({"role": "user", "content": '```' + str(content) + '```' + last_sentence})
 	# print("messages: " , messages)
+	print('```'  + str(content) + '```' + last_sentence)
 	completion = openai.ChatCompletion.create(
 		model="gpt-3.5-turbo",
 		messages=[
